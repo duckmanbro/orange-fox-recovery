@@ -102,17 +102,20 @@ jobs:
 
     - name: Clone Device & Common Tree
       run: |
-        # Entra na raiz da tree do OrangeFox
         cd ${GITHUB_WORKSPACE}/OrangeFox/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
-        
-        # Clone do Common (na pasta correta fora do m14x)
+
+        # Mata qualquer pasta que o sync criou para não dar conflito de GIT
+        rm -rf device/samsung/m14x
+        rm -rf device/samsung/s5e8535-common
+
+        # Clona o Common
         git clone https://github.com/AshutoshProjects/twrp_device_samsung_s5e8535-common -b twrp-12.1 device/samsung/s5e8535-common
-        
-        # Clone do seu Device Tree (m14x)
-        git clone ${{ github.event.inputs.DEVICE_TREE }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ${{ github.event.inputs.DEVICE_PATH }}
-        
-        cd ${{ github.event.inputs.DEVICE_PATH }}
-        echo "COMMIT_ID=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+        # Clona o seu Device Tree
+        git clone ${{ github.event.inputs.DEVICE_TREE }} -b fox12 device/samsung/m14x
+
+        # Define o COMMIT_ID para o log
+        echo "COMMIT_ID=$(cd device/samsung/m14x && git rev-parse HEAD)" >> $GITHUB_ENV
 
     - name: Check Manifest Branch
       uses: haya14busa/action-cond@v1
