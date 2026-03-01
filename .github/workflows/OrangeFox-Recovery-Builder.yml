@@ -109,7 +109,7 @@ jobs:
         rm -rf device/samsung/s5e8535-common
 
         # Clona o Common
-        git clone https://github.com/AshutoshCodeSpace/twrp_device_samsung_s5e8535-common -b twrp-12.1 device/samsung/s5e8535-common
+        git clone https://github.com/duckmanbro/common-exynos1330 -b twrp-12.1 device/samsung/s5e8535-common
 
         # Clona o seu Device Tree
         git clone ${{ github.event.inputs.DEVICE_TREE }} -b fox12 device/samsung/m14x
